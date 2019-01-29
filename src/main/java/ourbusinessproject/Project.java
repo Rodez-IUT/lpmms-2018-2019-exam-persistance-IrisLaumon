@@ -16,7 +16,10 @@ public class Project {
     private String title;
 
     private String description;
-
+    
+    @Version
+    @Column(columnDefinition="integer DEFAULT 0", nullable=false)
+    private long version = 0L;
 
     @NotNull
     @ManyToOne(cascade = {CascadeType.PERSIST})
@@ -56,4 +59,12 @@ public class Project {
     public void setEnterprise(Enterprise enterprise) {
         this.enterprise = enterprise;
     }
+
+	public long getVersion() {
+		return version;
+	}
+
+	public void setVersion(long version) {
+		this.version = version;
+	}
 }

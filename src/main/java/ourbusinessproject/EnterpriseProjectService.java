@@ -19,15 +19,40 @@ public class EnterpriseProjectService {
         saveEnterprise(enterprise);
         project.setEnterprise(enterprise);
         enterprise.addProject(project);
-        entityManager.persist(project);
-        entityManager.flush();
-        return project;
+        
+        if (entityManager.contains(project)) {
+        	entityManager.persist(project);
+            entityManager.flush();
+            return project;
+        } else {
+        	Project newProject = new Project();
+        	newProject.setDescription(project.getDescription());
+        	newProject.setEnterprise(project.getEnterprise());
+        	newProject.setTitle(project.getTitle());
+        	newProject.setVersion(project.getVersion());
+        	
+        	entityManager.persist(newProject);
+            entityManager.flush();
+            return newProject;
+        }
     }
 
     public Enterprise saveEnterprise(Enterprise enterprise) {
-        entityManager.persist(enterprise);
-        entityManager.flush();
-        return enterprise;
+    	if (entityManager.contains(enterprise)) {
+    		entityManager.persist(enterprise);
+            entityManager.flush();
+            return enterprise;
+    	} else {
+	    	Enterprise newEnterprise = new Enterprise();
+	    	newEnterprise.setName(enterprise.getName());
+	    	newEnterprise.setDescription(enterprise.getDescription());
+	    	newEnterprise.setContactEmail(enterprise.getContactEmail());
+	    	newEnterprise.setContactName(enterprise.getContactName());
+	    	newEnterprise.setId(enterprise.getId());
+	    	
+	        entityManager.flush();
+	        return newEnterprise;
+    	}
     }
 
     public Project findProjectById(Long id) {

@@ -20,21 +20,22 @@ public class EnterpriseProjectService {
         project.setEnterprise(enterprise);
         enterprise.addProject(project);
         
-        if (entityManager.contains(project)) {
-        	entityManager.persist(project);
-            entityManager.flush();
-            return project;
-        } else {
+        /* Le test testSaveDetachedProject passe avec le bloc de code suivant décommenté.
+         * Cependant, l'objet n'est pas persistent, ce qui empêche les tests de la partie 2 et 3 de passer.
+         * if (!entityManager.contains(project)) {
         	Project newProject = new Project();
         	newProject.setDescription(project.getDescription());
         	newProject.setEnterprise(project.getEnterprise());
         	newProject.setTitle(project.getTitle());
         	newProject.setVersion(project.getVersion());
         	
-        	entityManager.persist(newProject);
             entityManager.flush();
             return newProject;
-        }
+        }*/
+        
+        entityManager.persist(project);
+        entityManager.flush();
+        return project;
     }
 
     public Enterprise saveEnterprise(Enterprise enterprise) {
